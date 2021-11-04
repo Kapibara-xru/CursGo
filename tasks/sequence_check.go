@@ -1,10 +1,7 @@
-package main
+package tasks
 
-import (
-	"fmt"
-)
-
-func Solution(A []int) int {
+// Task sequence check
+func Solution3(A []int) int {
 	flag := 1
 	for i := 1; i <= len(A); i++ {
 		if !checkElem(A, i) {
@@ -23,12 +20,4 @@ func checkElem(A []int, n int) bool {
 		}
 	}
 	return flag
-}
-
-func main() {
-	A := []int{1, 2, 3, 8, 6, 7, 4, 9, 10, 5}
-	for i := range A {
-		fmt.Printf("%d ", A[i])
-	}
-	fmt.Printf("\n %d \n", Solution(A))
 }
