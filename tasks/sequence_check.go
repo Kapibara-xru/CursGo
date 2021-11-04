@@ -6,6 +6,7 @@ func Solution3(A []int) int {
 	for i := 1; i <= len(A); i++ {
 		if !checkElem(A, i) {
 			flag = 0
+			break
 		}
 	}
 	return flag

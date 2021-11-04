@@ -8,6 +8,16 @@ import (
 	"net/http"
 )
 
+type result struct {
+	Payload []interface{} `json:"payload"`
+	Results []interface{} `json:"results"`
+}
+type Message struct {
+	User_name string `json:"user_name"`
+	Task      string `json:"task"`
+	Results   result `json:"results"`
+}
+
 //Делаем GET запрос на сервер
 func HttpGetRequest(url string) []interface{} {
 	var mas []interface{}
@@ -28,18 +38,23 @@ func HttpGetRequest(url string) []interface{} {
 }
 
 //Делаем POST запрос на сервер
-func HttpPostRequst(nickName string, task string, payload string, results string) string {
+func HttpPostRequst(nickName string, task string, payload []interface{}, results []interface{}) string {
 	client := http.Client{}
 
-	var jsonData = []byte(`{"user_name": "` + nickName + `",
-		"task":"` + task + `",
-		"results":{
-			"payload": ` + payload + `,
-			"results": ` + results + `
-		}
-	}`)
+	msg := &Message{
+		User_name: nickName,
+		Task:      task,
+		Results: result{
+			Payload: payload,
+			Results: results,
+		},
+	}
+	bytesRepresentation, err := json.Marshal(msg)
+	if err != nil {
+		fmt.Println(err)
+	}
 
-	req, err := http.NewRequest("POST", "http://116.203.203.76:3000/tasks/solution", bytes.NewBuffer(jsonData))
+	req, err := http.NewRequest("POST", "http://116.203.203.76:3000/tasks/solution", bytes.NewBuffer(bytesRepresentation))
 	if err != nil {
 		fmt.Println(err)
 	}
